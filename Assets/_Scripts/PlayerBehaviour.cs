@@ -6,10 +6,12 @@ public class PlayerBehaviour : MonoBehaviour
 {
     public CharacterController controller;
 
+    [Header("Movement")]
     public float maxSpeed = 10.0f;
     public float gravity = -30.0f;
     public float jumpHeight = 3.0f;
 
+    [Header ("Ground detection properties")]
     public Transform groundCheck;
     public float groundRadius = 0.5f;
     public LayerMask groundMask;
@@ -17,10 +19,14 @@ public class PlayerBehaviour : MonoBehaviour
     public Vector3 velocity;
     public bool isGrounded;
 
+    [Header("Minimap")]
+    public GameObject minimap;
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        minimap.SetActive(false);
     }
 
     // Update is called once per frame - once every 16.6666ms
@@ -32,6 +38,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2.0f;
+            
         }
 
         float x = Input.GetAxis("Horizontal");
@@ -49,6 +56,12 @@ public class PlayerBehaviour : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            //Minimap off
+            minimap.SetActive(!minimap.activeInHierarchy);
+        }
     }
 
     void OnDrawGizmos()
